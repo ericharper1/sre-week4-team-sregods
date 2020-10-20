@@ -53,7 +53,12 @@ tfFreq = [tf[0:5]]
 # 6. Which resource (which path) was accessed the most?
 print("Question 6: Which resource (which path) was accessed the most?")
 rows = df['path'].value_counts(sort=True)
-print(f"\nMost accessed path:\n{rows.iloc[[0]]}")
+print(f"\nMost accessed path:\n{rows.drop_duplicates()}")
+
+# 7. The first element in the path indicates a resource class. List all of the accessed resource classes.
+print("Question 7: The first element in the path indicates a resource class. List all of the accessed resource classes")
+rows = df['path'].value_counts(sort=True)
+print(f"\nList of all the accessed resource classes:\n{rows.iloc[[0]]}")
 
 print("Done")
 
