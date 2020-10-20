@@ -21,8 +21,8 @@ print (f"\tdate range: {mindate} to {maxdate}")
 print("\nQuestion 2: response code pie chart")
 vc = df['rcode'].value_counts()
 print(f"\nValue Counts for 'rcode':\n{vc}")
-# vc.plot.pie(figsize=(10,10))
-# plt.show()
+vc.plot.pie(figsize=(10,10))
+plt.show()
 
 # Question 3. How many different, unique clients accessed 
 # this service?
@@ -46,19 +46,24 @@ rows = df['clientloc'].value_counts(sort=True)
 tf = rows.iloc[0:5]
 tfLocs = [tf.index]
 tfFreq = [tf[0:5]]
-# tf.plot.bar(tfLocs, tfFreq)
-# plt.ylim(0, 2500)
-# plt.show()
+tf.plot.bar(tfLocs, tfFreq)
+plt.ylim(0, 2500)
+plt.show()
 
 # 6. Which resource (which path) was accessed the most?
-print("Question 6: Which resource (which path) was accessed the most?")
+print("\nQuestion 6: Which resource (which path) was accessed the most?")
 rows = df['path'].value_counts(sort=True)
 print(f"\nMost accessed path:\n{rows.drop_duplicates()}")
 
 # 7. The first element in the path indicates a resource class. List all of the accessed resource classes.
-print("Question 7: The first element in the path indicates a resource class. List all of the accessed resource classes")
-rows = df['path'].value_counts(sort=True)
-print(f"\nList of all the accessed resource classes:\n{rows.iloc[[0]]}")
+print("\nQuestion 7: The first element in the path indicates a resource class.\n")
+print("List all of the accessed resource classes")
+rows = df['path']
+resources = set()
+for index in rows.items():
+    split_path = index[1].split('/')
+    resource = split_path[1]
+    resources.add(resource)
+print(resources)
 
 print("Done")
-
