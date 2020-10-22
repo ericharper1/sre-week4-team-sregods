@@ -1,6 +1,7 @@
 import pandas as pd
 from datetime import datetime
 import matplotlib.pyplot as plt
+import os
 
 logfilename = 'nasa_access_log_500k.csv'
 
@@ -64,9 +65,7 @@ for index in rows.items():
     split_path = index[1].split('/')
     resource = split_path[1]
     resources.add(resource)
-print(resources)
-
-print("Done")
+print("\n".join(resources))
 
 # 8. Display a histogram showing the frequency of access for each resource class.
 print ("\nQuestion 8: Display a histogram showing the frequency of access for each resource class.")
@@ -88,9 +87,7 @@ print ("Question 9: Which day of the week typically had the most requests?")
 rows = df['timestamp']
 days = [] 
 for index in rows.items():
-    #print(index[1])
     temp = str(index[1])
-    #print(temp)
     day = temp[8:10]
     days.append(day)
 ser = pd.Series(days)
@@ -98,7 +95,6 @@ week = {"Tuesday":0,"Wednesday":0,"Thursday":0,"Friday":0,"Saturday":0,"Sunday":
 rows = ser.value_counts(sort=True)
 
 for index, item in rows.items():
-    #print(index)
     temp = int(index)
     day = temp % 7
     if (day == 1):
@@ -118,3 +114,37 @@ for index, item in rows.items():
 print(week)
 
 # 10. During which hour of the day did the site typically serve the most data?
+print('Question 10: During which hour of the day did the site typically serve the most data?')
+rows = df['timestamp']
+hours = [] 
+for index in rows.items():
+    temp = str(index[1])
+    hour = temp[11:13]
+    hours.append(hour)
+ser = pd.Series(hours)
+ser = ser.value_counts()
+print(ser.iloc[[0]])
+
+# 11. What was the availability of this site? 
+print('Question 11: What was the availability of this site?')
+rows = df['rcode'].value_counts()
+total = 0
+good_rcode = 0
+for index, value in rows.items():
+    if index < 400:
+        good_rcode += value
+    total += value
+
+success_ratio = (good_rcode / total) * 100
+print('Availability: ' + str(success_ratio) + '%')
+
+# 12. How many different types of resources were served? 
+print('How many different types of resources were served?')
+resources = df['path']
+extensions = set()
+for item, value in resources.items():
+    name, extension = os.path.splitext(value)
+    extensions.add(extension)
+print('Number of resources served: ' + str(len(extensions)))
+
+print('Done')
