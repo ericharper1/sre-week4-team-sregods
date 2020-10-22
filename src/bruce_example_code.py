@@ -22,7 +22,7 @@ print("\nQuestion 2: response code pie chart")
 vc = df['rcode'].value_counts()
 print(f"\nValue Counts for 'rcode':\n{vc}")
 vc.plot.pie(figsize=(10,10))
-plt.show()
+#plt.show()
 
 # Question 3. How many different, unique clients accessed 
 # this service?
@@ -48,7 +48,7 @@ tfLocs = [tf.index]
 tfFreq = [tf[0:5]]
 tf.plot.bar(tfLocs, tfFreq)
 plt.ylim(0, 2500)
-plt.show()
+#plt.show()
 
 # 6. Which resource (which path) was accessed the most?
 print("\nQuestion 6: Which resource (which path) was accessed the most?")
@@ -67,3 +67,54 @@ for index in rows.items():
 print(resources)
 
 print("Done")
+
+# 8. Display a histogram showing the frequency of access for each resource class.
+print ("\nQuestion 8: Display a histogram showing the frequency of access for each resource class.")
+rows = df['path']
+resources = [] 
+for index in rows.items():
+    split_path = index[1].split('/')
+    resource = split_path[1]
+    resources.append(resource)
+
+ser = pd.Series(resources)
+rows = ser.value_counts(sort=True)
+#print(rows)
+#plt.hist(rows)
+#plt.show()
+
+# 9. Which day of the week typically had the most requests?
+print ("Question 9: Which day of the week typically had the most requests?")
+rows = df['timestamp']
+days = [] 
+for index in rows.items():
+    #print(index[1])
+    temp = str(index[1])
+    #print(temp)
+    day = temp[8:10]
+    days.append(day)
+ser = pd.Series(days)
+week = {"Tuesday":0,"Wednesday":0,"Thursday":0,"Friday":0,"Saturday":0,"Sunday":0,"Monday":0}
+rows = ser.value_counts(sort=True)
+
+for index, item in rows.items():
+    #print(index)
+    temp = int(index)
+    day = temp % 7
+    if (day == 1):
+        week["Tuesday"] += item
+    if (day == 2):
+        week["Wednesday"] += item
+    if (day == 3):
+        week["Thursday"] += item
+    if (day == 4):
+        week["Friday"] += item
+    if (day == 5):
+        week["Saturday"] += item
+    if (day == 6):
+        week["Sunday"] += item
+    if (day == 0):
+        week["Monday"] += item
+print(week)
+
+# 10. During which hour of the day did the site typically serve the most data?
